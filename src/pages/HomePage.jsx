@@ -4,14 +4,17 @@ import { asyncPopulateUsersAndThreads } from '../states/shared/action';
 import { asyncToggleVoteThread } from '../states/threads/action';
 import ThreadItem from '../components/ThreadItem';
 import Leaderboards from '../components/Leaderboards'; // Buat komponen ini terpisah jika mau skor tinggi
+import { asyncReceiveLeaderboards } from '../states/leaderboards/action';
+import LeaderboardItem from '../components/LeaderboardItem';
 
 function HomePage() {
-  const { threads = [], users = [], authUser } = useSelector((states) => states);
+  const { threads = [], users = [], authUser, leaderboards = [] } = useSelector((states) => states);
   const dispatch = useDispatch();
   const [categoryFilter, setCategoryFilter] = useState('');
 
   useEffect(() => {
     dispatch(asyncPopulateUsersAndThreads());
+    dispatch(asyncReceiveLeaderboards());
   }, [dispatch]);
 
   const onVote = (id, voteType) => {
@@ -57,9 +60,10 @@ function HomePage() {
       </div>
       
       <div className="w-1/4">
-          {/* LEADERBOARD WIDGET BISA DISINI */}
-          <h3 className="text-xl font-bold">Klasemen</h3>
-          {/* Render Leaderboard Component Here */}
+        <h3 className="text-xl font-bold mb-4 text-gray-700">Klasemen Aktif</h3>
+        {leaderboards.map(({ user, score }) => (
+          <LeaderboardItem key={user.id} user={user} score={score} />
+        ))}
       </div>
     </div>
   );
