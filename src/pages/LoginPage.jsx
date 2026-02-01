@@ -2,14 +2,15 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { asyncSetAuthUser } from '../states/authUser/action';
-import useInput from '../hooks/useInput'; // Buat hook ini atau pakai state biasa
+import useInput from '../hooks/useInput'; 
 
 function LoginPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  // Simple state handling manual tanpa hook custom untuk mempercepat
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
+  
+  // Menggunakan Custom Hook useInput yang baru dibuat
+  const [email, onEmailChange] = useInput('');
+  const [password, onPasswordChange] = useInput('');
 
   const onLogin = (event) => {
     event.preventDefault();
@@ -23,12 +24,20 @@ function LoginPage() {
         <h2 className="text-2xl font-bold mb-6 text-center">Login Forum</h2>
         <form onSubmit={onLogin}>
           <input 
-            type="email" placeholder="Email" value={email} onChange={(e)=>setEmail(e.target.value)}
-            className="w-full mb-4 p-2 border rounded" required
+            type="email" 
+            placeholder="Email" 
+            value={email} 
+            onChange={onEmailChange}
+            className="w-full mb-4 p-2 border rounded" 
+            required
           />
           <input 
-            type="password" placeholder="Password" value={password} onChange={(e)=>setPassword(e.target.value)}
-            className="w-full mb-6 p-2 border rounded" required
+            type="password" 
+            placeholder="Password" 
+            value={password} 
+            onChange={onPasswordChange}
+            className="w-full mb-6 p-2 border rounded" 
+            required
           />
           <button className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700">Login</button>
         </form>

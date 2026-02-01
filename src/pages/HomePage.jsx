@@ -2,9 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { asyncPopulateUsersAndThreads } from '../states/shared/action';
 import { asyncToggleVoteThread } from '../states/threads/action';
-import ThreadItem from '../components/ThreadItem';
-import Leaderboards from '../components/Leaderboards'; // Buat komponen ini terpisah jika mau skor tinggi
 import { asyncReceiveLeaderboards } from '../states/leaderboards/action';
+import ThreadItem from '../components/ThreadItem';
 import LeaderboardItem from '../components/LeaderboardItem';
 
 function HomePage() {
@@ -39,7 +38,7 @@ function HomePage() {
       <div className="w-3/4">
         <h2 className="text-2xl font-bold mb-4">Diskusi Tersedia</h2>
         
-        {/* KATEGORI BUTTONS (5 Star Requirement) */}
+        {/* KATEGORI BUTTONS */}
         <div className="flex gap-2 mb-4">
             {categoryList.map((category) => (
                 <button 
@@ -60,10 +59,12 @@ function HomePage() {
       </div>
       
       <div className="w-1/4">
-        <h3 className="text-xl font-bold mb-4 text-gray-700">Klasemen Aktif</h3>
-        {leaderboards.map(({ user, score }) => (
-          <LeaderboardItem key={user.id} user={user} score={score} />
-        ))}
+          <h3 className="text-xl font-bold mb-4">Klasemen</h3>
+          <div className="flex flex-col gap-2">
+            {leaderboards.map(({ user, score }) => (
+                <LeaderboardItem key={user.id} user={user} score={score} />
+            ))}
+          </div>
       </div>
     </div>
   );
